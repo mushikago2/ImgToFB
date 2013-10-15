@@ -7,6 +7,7 @@ function FirstView() {
 	var _appid = "152874854922555";
     var _permissions = ['publish_stream'];
 	var _publishing = false;
+	var _publishPrivacy = {value:'ALL_FRIENDS'};
 	
 	var _img = Ti.UI.createImageView({
 	    image:"images/summer_chihuahua.jpg"
@@ -64,10 +65,45 @@ function FirstView() {
     });
 	
 	
-	//パブリッシュ
+	//投稿範囲の選択ダイアログ表示
 	function showPublishDialog(){
-	    alert("投稿ダイアログ")
+        var _publishDialog = Ti.UI.createOptionDialog();
+        _publishDialog.setTitle("どのように投稿しますか？");
+        _publishDialog.setOptions([
+            "友達まで",
+            "一般公開",
+            "自分のみ",
+            "キャンセル"
+            ]);
+        _publishDialog.setCancel(3);
+        
+        _publishDialog.addEventListener('click',function(event){
+            if(event.index == 0){
+                // 友達まで
+                _publishPrivacy = {value:'ALL_FRIENDS'};
+                publishImageToFacebook()
+            }else if(event.index == 1){
+                // 一般公開
+                _publishPrivacy = {value:'EVERYONE'};
+                publishImageToFacebook()
+            }else if(event.index == 2){
+                // 自分のみ
+                _publishPrivacy = {value:'SELF'};
+                publishImageToFacebook()
+            }
+            
+            if(event.cancel){
+                _publishing = false
+            }
+        });
+        
+        _publishDialog.show();
 	}
+	
+	//投稿開始
+    function publishImageToFacebook(){
+        alert("投稿開始")
+    }
 	
 	return self;
 }
