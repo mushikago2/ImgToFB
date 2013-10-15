@@ -19,6 +19,10 @@ function FirstView() {
 	
 	self.add(_img);
 	
+	var _actInd = Ti.UI.createActivityIndicator();
+	_actInd.hide();
+    self.add(_actInd);
+    
 	//ログイン
 	function loginToFacebook(){
 	    _publishing = true;
@@ -102,8 +106,38 @@ function FirstView() {
 	
 	//投稿開始
     function publishImageToFacebook(){
-        alert("投稿開始")
+        var _publishImg = _img.toImage();
+        var _messageText = "これはテスト投稿です。"
+        var _graphStr = "me/photos";
+        var _postObj = {
+                message: _messageText,  //'Test6 by CheerMeUpTi',
+                picture: _publishImg, //picture: image64,
+                privacy : _publishPrivacy
+            }
+        var _doneDialog = Ti.UI.createAlertDialog();
+        _doneDialog.setTitle("Facebookへ投稿");
+        
+        _module.requestWithGraphPath(
+            _graphStr,
+            _postObj,
+            "POST",
+            function(e) {
+                if (e.success) {
+                    _doneDialog.setMessage("自分のアルバムに投稿されました。"); 
+                    _doneDialog.show();
+                }else{
+                    _doneDialog.setMessage("エラーが発生し投稿されませんでした。"); 
+                    _doneDialog.show();
+                }
+                
+                _publishing = false;
+                _actInd.hide();
+            }
+        );
+        
+        _actInd.show();
     }
+	
 	
 	return self;
 }
