@@ -31,7 +31,7 @@ function FirstView() {
         if(_module.loggedIn === false) {
             var _alertDialog = Ti.UI.createAlertDialog({
                 title : "Facebook",
-                message : "Facebookにログインしますか？",
+                message : "Facebookにログインすっぺか？",
                 buttonNames : ["ログイン", "キャンセル"]
             });
             _alertDialog.addEventListener('click', function(e) {
